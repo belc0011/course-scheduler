@@ -36,7 +36,7 @@ function Courses() {
         </>
     ) : null }
         <h1>Courses:</h1>
-            <h3>Click on the name of a course to pull up more information</h3>
+            <h3>Click on the name of a course to edit the course info</h3>
             {courses.length > 0 ? courses.map((course) => {
                 return <CourseCard key={course.id} name={course.name} credits={course.credits} id={course.id}/>
             }) : <h1>Loading...</h1>}

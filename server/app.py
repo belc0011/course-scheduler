@@ -133,7 +133,22 @@ class CourseById(Resource):
         pass
 
     def patch(self, id):
-        pass
+        request_dict = request.get_json()
+        course_to_edit = Course.query.filter_by(id=id).first()
+        print(course_to_edit)
+        if course_to_edit:
+            if request_dict['name']:
+                course_to_edit.name = request_dict['name'].title()
+            if request_dict['credits']:
+                course_to_edit.credits = request_dict['credits']
+
+            db.session.add(course_to_edit)
+            db.session.commit()
+            updated_record = course_to_edit.to_dict()
+            response = make_response(updated_record, 200)
+            return response
+        else:
+            return {'error': 'requested course not found'}, 400
 
     def delete(self, id):
         pass
