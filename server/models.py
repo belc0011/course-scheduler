@@ -12,8 +12,8 @@ class Teacher(db.Model, SerializerMixin):
     first_name = db.Column(db.String)
     last_name = db.Column(db.String)
 
-    student = db.relationship('Student', back_populates='teacher')
-    serialize_rules = ('-student.teacher')
+    courses = db.relationship('Course', back_populates='teacher')
+    serialize_rules=('-courses.teacher',)
 
 class Student(db.Model, SerializerMixin):
     __tablename__ = "students"
@@ -23,8 +23,8 @@ class Student(db.Model, SerializerMixin):
     last_name = db.Column(db.String)
     grade = db.Column(db.Integer)
 
-    teacher = db.relationship('Teacher', back_populates='student')
-    serialize_rules = ('-teacher.student',)
+    courses = db.relationship('Course', back_populates='student')
+    serialize_rules=('-courses.student',)
 
 class Course(db.Model, SerializerMixin):
     __tablename__ = "courses"
@@ -32,7 +32,11 @@ class Course(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     credits = db.Column(db.Integer)
-    start_time = db.Column(db.Time)
-    end_time = db.Column(db.Time)
+    start_time = db.Column(db.String)
+    end_time = db.Column(db.String)
     student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
     teacher_id = db.Column(db.Integer, db.ForeignKey('teachers.id'))
+
+    student = db.relationship('Student', back_populates='courses')
+    teacher = db.relationship('Teacher', back_populates='courses')
+    serialize_rules=('-student.courses', '-teacher.courses')

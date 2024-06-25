@@ -7,12 +7,13 @@ import Students from './Students'
 import TeacherPage from './TeacherPage'
 import StudentPage from "./StudentPage";
 import CoursePage from "./CoursePage";
+import NavBar from "./NavBar"
 
 function App() {
   return (
     <Router>
         <>
-          <NavBar user={user} setUser={setUser} />
+          <NavBar />
           <main>
             <Switch>
               <Route exact path="/">
