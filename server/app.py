@@ -55,7 +55,12 @@ class Teachers(Resource):
 
 class TeacherById(Resource):
     def get(self, id):
-        pass
+        teacher = Teacher.query.filter_by(id=id).first()
+        if teacher:
+            response = make_response(teacher.to_dict(), 200)
+            return response
+        else:
+            return {'error': 'requested teacher not found'}, 404
 
     def post(self, id):
         pass
