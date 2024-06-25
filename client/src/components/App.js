@@ -10,6 +10,24 @@ import CoursePage from "./CoursePage";
 import NavBar from "./NavBar"
 
 function App() {
+  const [teachers, setTeachers] = useState([])
+
+    useEffect(() => {
+        fetch(`http://127.0.0.1:5555/teachers`, {
+        method: "GET",
+        })
+        .then(res => {
+            if (res.ok) {
+                res.json().then(data => setTeachers(data))
+            }
+            else {
+                console.log("error: " + res)
+            }
+        })
+        .catch(error => {
+            console.error("Error parsing JSON:", error);
+        })
+    }, [])
   return (
     <Router>
         <>
@@ -20,10 +38,10 @@ function App() {
                 <Home />
               </Route>
               <Route exact path="/teachers">
-                <Teachers />
+                <Teachers teachers={teachers} setTeachers = {setTeachers}/>
               </Route>
               <Route exact path="/teachers/:id">
-                <TeacherPage />
+                <TeacherPage teachers={teachers}/>
               </Route>
               <Route exact path="/students">
                 <Students />

@@ -1,24 +1,7 @@
 import React, { useEffect, useState } from "react";
 import TeacherCard from './TeacherCard'
 
-function Teachers() {
-    const [teachers, setTeachers] = useState([])
-    useEffect(() => {
-        fetch(`http://127.0.0.1:5555/teachers`, {
-        method: "GET",
-        })
-        .then(res => {
-            if (res.ok) {
-                res.json().then(data => setTeachers(data))
-            }
-            else {
-                console.log("error: " + res)
-            }
-        })
-        .catch(error => {
-            console.error("Error parsing JSON:", error);
-        })
-    }, [])
+function Teachers({teachers, setTeachers}) {
     
     return (
     <div>
