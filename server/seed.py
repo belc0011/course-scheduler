@@ -43,7 +43,7 @@ if __name__ == '__main__':
         random.shuffle(names)
 
         for n in range(21):
-            course = Course(name=names[n % len(names)], student_id=rc(student_id), teacher_id=rc(teacher_id))
+            course = Course(name=names[n % len(names)], student_id=rc(student_id), teacher_id=rc(teacher_id), credits=rc(credits))
             courses.append(course)
 
         db.session.add_all(teachers)
