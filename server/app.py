@@ -30,10 +30,28 @@ class Home(Resource):
 
 class Teachers(Resource):
     def get(self):
-        pass
-
+        teachers = Teacher.query.order_by(Teacher.last_name).all()
+        if teachers:
+            teacher_list = []
+            for teacher in teachers:
+                teacher_list.append(teacher.to_dict())
+            response = make_response(teacher_list, 200)
+            return response
+        else:
+            return {'error': 'No teachers found'}, 404
     def post(self):
-        pass
+        request_dict = request.get_json()
+        new_teacher = Teacher(
+            first_name = request_dict.get('first_name'),
+            last_name = request_dict.get('last_name')
+        )
+        if new_teacher:
+            db.session.add(new_teacher)
+            db.session.commit()
+            response = make_response(new_teacher.to_dict(), 201)
+            return response
+        else:
+            return {'error': 'Missing required info'}, 400
 
 class TeacherById(Resource):
     def get(self, id):
