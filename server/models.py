@@ -26,3 +26,11 @@ class User(db.Model, SerializerMixin):
     def authenticate(self, password):
         return bcrypt.check_password_hash(
             self._password_hash, password.encode('utf-8'))
+
+class Student(db.Model, SerializerMixin):
+    __tablename__ = "students"
+
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String)
+    last_name = db.Column(db.String)
+    grade = db.Column(db.Integer)
