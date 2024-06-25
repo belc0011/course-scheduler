@@ -28,8 +28,8 @@ class Student(db.Model, SerializerMixin):
     teacher = db.relationship('Teacher', back_populates='student')
     serialize_rules = ('-teacher.student',)
 
-class Courses(db.Model, SerializerMixin):
-    __tablename__ = "classes"
+class Course(db.Model, SerializerMixin):
+    __tablename__ = "courses"
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
