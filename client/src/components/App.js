@@ -11,6 +11,7 @@ import NavBar from "./NavBar"
 
 function App() {
   const [teachers, setTeachers] = useState([])
+  const [courses, setCourses] = useState([])
 
     useEffect(() => {
         fetch(`http://127.0.0.1:5555/teachers`, {
@@ -28,6 +29,23 @@ function App() {
             console.error("Error parsing JSON:", error);
         })
     }, [])
+    useEffect(() => {
+      fetch(`http://127.0.0.1:5555/courses`, {
+      method: "GET",
+      })
+      .then(res => {
+          if (res.ok) {
+              res.json().then(data => setCourses(data))
+          }
+          else {
+              console.log("error: " + res)
+          }
+      })
+      .catch(error => {
+          console.error("Error parsing JSON:", error);
+      })
+  }, [])
+
   return (
     <Router>
         <>
@@ -50,7 +68,7 @@ function App() {
                 <StudentPage />
               </Route>
               <Route path="/courses">
-                <Courses />
+                <Courses courses={courses} setCourses={setCourses}/>
               </Route>
               <Route exact path="/courses/:id">
                 <CoursePage />

@@ -32,8 +32,6 @@ class Course(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     credits = db.Column(db.Integer)
-    start_time = db.Column(db.String)
-    end_time = db.Column(db.String)
     student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
     teacher_id = db.Column(db.Integer, db.ForeignKey('teachers.id'))
 

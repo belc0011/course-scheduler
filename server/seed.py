@@ -2,6 +2,7 @@
 
 # Standard library imports
 from random import randint, choice as rc
+import random
 
 # Remote library imports
 from faker import Faker
@@ -35,14 +36,14 @@ if __name__ == '__main__':
             students.append(student)
         
         courses = []
-        names = ['English', 'Spanish', 'Algebra 1', 'Algebra 2', 'Criminal Justice', 'Art', 'History', 'Biology', 'Chemistry']
+        names = ['English', 'Spanish', 'Algebra 1', 'Algebra 2', 'Criminal Justice', 'Art', 'History', 'Biology', 'Chemistry', 'P.E', 'Ceramics', 'Weights', 'Choir', "Band", "Orchestra", "Geometry", "Calculus", "Pre-Calculus", "Economics", "Algebra Support", "Computer Science"]
         credits = [1, 2, 3, 4, 5]
-        start_time = ['7:30 am', '8:00 am', '8:30 am', '9:00 am', '9:30 am', '10:00 am', '10:30 am']
-        end_time = ['11:00 am', '11:30 am', '12:00 pm', '12:30 pm', '1:00 pm', '1:30 pm', '2:00 pm', '2:30 pm']
         student_id = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
         teacher_id = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-        for n in range(30):
-            course = Course(name=rc(names), start_time=rc(start_time), end_time=rc(end_time), student_id=rc(student_id), teacher_id=rc(teacher_id))
+        random.shuffle(names)
+
+        for n in range(21):
+            course = Course(name=names[n % len(names)], student_id=rc(student_id), teacher_id=rc(teacher_id))
             courses.append(course)
 
         db.session.add_all(teachers)

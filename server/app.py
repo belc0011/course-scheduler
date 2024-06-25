@@ -81,7 +81,16 @@ class StudentById(Resource):
 
 class Courses(Resource):
     def get(self):
-        pass
+        courses = Course.query.order_by(Course.name).all()
+        course_list = []
+        if courses:
+            for course in courses:
+                course_list.append(course.to_dict())
+            response = make_response(course_list, 200)
+            return response
+        else:
+            return {'error': 'no courses found'}, 404
+
 
     def post(self):
         pass
