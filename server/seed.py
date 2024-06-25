@@ -48,3 +48,5 @@ if __name__ == '__main__':
         db.session.add_all(students)
         db.session.add_all(courses)
         db.session.commit()
+        
+        print('seeding finished')
