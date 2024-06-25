@@ -106,7 +106,19 @@ class Courses(Resource):
 
 
     def post(self):
-        pass
+        request_dict = request.get_json()
+        new_course = Course(
+            name = request_dict.get('name').title(),
+            credits = request_dict.get('credits')
+        )
+        if new_course:
+            db.session.add(new_course)
+            db.session.commit()
+            updated_record = new_course.to_dict()
+            response = make_response(updated_record, 201)
+            return response
+        else:
+            {'error': 'required fields missing'}, 400
 
 class CourseById(Resource):
     def get(self, id):

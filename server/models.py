@@ -30,8 +30,8 @@ class Course(db.Model, SerializerMixin):
     __tablename__ = "courses"
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
-    credits = db.Column(db.Integer)
+    name = db.Column(db.String, unique=True, nullable=False)
+    credits = db.Column(db.Integer, nullable=False)
     student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
     teacher_id = db.Column(db.Integer, db.ForeignKey('teachers.id'))
 
