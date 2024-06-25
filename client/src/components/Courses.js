@@ -1,8 +1,26 @@
 import React, { useEffect, useState } from "react";
 import CourseCard from './CourseCard'
 
-function Courses({courses, setCourses}) {
-    console.log(courses)
+function Courses() {
+    const [courses, setCourses] = useState([])
+
+    useEffect(() => {
+        fetch(`http://127.0.0.1:5555/courses`, {
+        method: "GET",
+        })
+        .then(res => {
+            if (res.ok) {
+                res.json().then(data => setCourses(data))
+            }
+            else {
+                console.log("error: " + res)
+            }
+        })
+        .catch(error => {
+            console.error("Error parsing JSON:", error);
+        })
+    }, [])
+
     return (
     <div>
         <h1>Courses:</h1>

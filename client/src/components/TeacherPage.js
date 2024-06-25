@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useLocation } from 'react-router-dom'
 
-function TeacherPage({teachers}) {
+function TeacherPage() {
     const [teacherToDisplay, setTeacherToDisplay] = useState({})
     
     const location = useLocation()

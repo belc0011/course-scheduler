@@ -67,14 +67,27 @@ class TeacherById(Resource):
 
 class Students(Resource):
     def get(self):
-        pass
+        students = Student.query.order_by(Student.last_name).all()
+        if students:
+            student_list = []
+            for student in students:
+                student_list.append(student.to_dict())
+            response = make_response(student_list, 200)
+            return response
+        else:
+            return {'error': 'no student data found'}, 404
 
     def post(self):
         pass
 
 class StudentById(Resource):
     def get(self, id):
-        pass
+        student = Student.query.filter_by(id=id).first()
+        if student:
+            response = make_response(student.to_dict(), 200)
+            return response
+        else:
+            return {'error': 'unable to locate student'}, 404
 
     def post(self, id):
         pass
@@ -97,7 +110,12 @@ class Courses(Resource):
 
 class CourseById(Resource):
     def get(self, id):
-        pass
+        course = Course.query.filter_by(id=id).first()
+        if course:
+            response = make_response(course.to_dict(), 200)
+            return response
+        else:
+            return {'error': 'course not found'}, 404
 
     def post(self, id):
         pass
