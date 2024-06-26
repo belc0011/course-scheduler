@@ -40,9 +40,6 @@ function Courses() {
             {courses.length > 0 ? courses.map((course) => {
                 return <CourseCard key={course.id} name={course.name} credits={course.credits} id={course.id}/>
             }) : <h1>Loading...</h1>}
-        <label>Click here to add a new course:</label>
-        <button onClick={handleClick}>New Course</button>
-            <AddCourse />
     </div>
 )
 }

@@ -1,70 +1,76 @@
-# Getting Started with Create React App
+# Course Scheduler
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Introduction
+This project is a fully functional web application designed to help counselors with the daunting task of creating schedules. Using this website you can generate lists of all students, teachers, and courses in the database. This allows you to do the following things:
+- Pull up a specific student to see a full list of their current courses
+- Pull up a specific teacher to see which courses they are currently teaching
+- Pull up course details, edit course details, and delete a course
+- Add students to a course
+- Add teachers as the teacher of record for a course
 
-## Available Scripts
+The front-end is built with React (a Javascript library for building User Interfaces) and the back-end is built using Flask (a Python web framework) with the assistance of Flask RESTful to provide RESTful API's. 
 
-In the project directory, you can run:
+## Important Files
 
-### `npm start`
+### AddCourse.js
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+This component allows the user to add a new course to the database. For ease of use, this screen only requests the course name and the number of credits. Other components will allow the user to add a student to the course, as the user will likely only have the course names to begin, and will begin to add student names at a later date. The form is a controlled form created using Formik, and there are validations in place so that the name of the course may not contain special characters (except a white space and a period).
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### AddStudent.js
 
-### `npm test`
+This component allows the user to create a new student record by entering the required information into the controlled form (created using Formik). Formik has validations in place so the student's first name may not include any special characters with the exception of an apostrophe (which may be present in some first names), and the student's last name may not include any numbers or special characters (with the exception of a hyphen, for students with hyphenated last names).
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+### App.js
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+This is the top-level component which is responsible for rendering the NavBar component as well as holding the router, which in turn is responsible for rendering the following components at the following routes:
+- Home.js (route: '/')
+- Teachers.js (route: '/teachers')
+- TeacherPage.js (route: '/teachers/:id')
+- Students.js (route: '/students')
+- StudentPage.js (route: '/students/:id')
+- Courses.js (route: '/courses')
+- CoursePage.js (route: '/courses/:id')
+- DeleteCourse.js (route: '/courses/delete/:id')
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+The remaining components are rendered inside one of these components.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### CourseCard.js
 
-### `npm run eject`
+This component holds the logic to display each course's information in a uniform fashion. It is rendered by the Courses.js component using a map function.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### CoursePage.js
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+This component renders the information only for the course whose name was clicked (whose ID is in the URL for this page). It renders the course's information upon page load utilizing a fetch request inside of UseEffect. This component holds a controlled forms (made using Formik) which is responsible for updating the class information as well as adding students who are enrolled in the course and also adding a teacher of record for the course. The fields are optional so the user can submit one (or more) attributes to update about the course. This component also redirects to the DeleteCourse.js component upon a button click (using a useHistory hook).
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### DeleteCourse.js
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+This component is rendered when the user clicks the "delete course" button on a previous page. This component then serves as an additional layer of confirmation that the user wishes to delete the course (as opposed to the user clicking the button accidentally). Once the user clicks the "submit" button in this component, the entire course record will be deleted. 
 
-## Learn More
+### Home.js
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+This component is the home page and is rendered when the domain is first visited. It holds a welcome screen as well as buttons responsible for navigating to the other components. 
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### NavBar.js
 
-### Code Splitting
+This component holds the navigation bar which displays at the top of each web page, navigating to Courses.js, Students.js, and Teachers.js.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### StudentCard.js
 
-### Analyzing the Bundle Size
+This component holds the logic to display each student's information in a uniform fashion. It is rendered by the Students.js component using a map function.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### StudentPage.js
 
-### Making a Progressive Web App
+This component renders the information only for the student whose name was clicked (whose ID is in the URL for this page). It renders the student's information upon page load utilizing a fetch request inside of UseEffect. The courses the student is currently enrolled in are displayed, and the courses are clickable. 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Students.js
 
-### Advanced Configuration
+This component renders the list of students in the database. This component has a button "add student" which conditionally renders the AddStudent.js component to allow the user to add a new student. It makes a fetch request for all of the students and renders them by rendering the StudentCard.js component for each student (using a map function). 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### TeacherCard.js
 
-### Deployment
+This component holds the logic to display each teacher's information in a uniform fashion. It is rendered by the Teachers.js component using a map function.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### TeacherPage.js
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This component renders the information only for the teacher whose name was clicked (whose ID is in the URL for this page). It renders the teacher's information upon page load utilizing a fetch request inside of UseEffect. The courses the teacher is currently teaching are displayed, and the courses are clickable. 

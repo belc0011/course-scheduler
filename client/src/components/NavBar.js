@@ -9,13 +9,13 @@ function NavBar() {
                 <Link to="/" className="nav-link">Home</Link>
             </div>
             <div>
+                <Link to="/courses" className="nav-link">Courses</Link>
+            </div>
+            <div>
                 <Link to="/teachers" className="nav-link">Teachers</Link>
             </div>
             <div>
                 <Link to="/students" className="nav-link">Students</Link>
-            </div>
-            <div>
-                <Link to="/courses" className="nav-link">Courses</Link>
             </div>
         </nav>
     );

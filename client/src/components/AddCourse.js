@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useHistory } from 'react-router-dom';
-import Home from './Home'
 
 function AddCourse() {
     const [newCourse, setNewCourse] = useState({})
@@ -39,7 +38,7 @@ function AddCourse() {
                 res.json().then(
                     data => {setNewCourse(data)
                 resetForm()
-                history.push('/courses') //fix - page doesn't refresh
+                history.push('/')
             })
             }
             else {

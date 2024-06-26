@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router-dom';
+import React from "react";
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './Home'
 import Teachers from './Teachers'
 import Courses from './Courses'
@@ -8,6 +8,7 @@ import TeacherPage from './TeacherPage'
 import StudentPage from "./StudentPage";
 import CoursePage from "./CoursePage";
 import NavBar from "./NavBar"
+import DeleteCourse from "./DeleteCourse";
 
 function App() {
 
@@ -37,6 +38,9 @@ function App() {
               </Route>
               <Route exact path="/courses/:id">
                 <CoursePage />
+              </Route>
+              <Route exact path="/courses/delete/:id">
+                <DeleteCourse />
               </Route>
             </Switch>
           </main>

@@ -40,12 +40,22 @@ function CoursePage() {
         .min(1, "Course must be at least 1 credit")
         .max(5, "Course may not be more than 5 credits")
         .nullable(),
+        studentName: yup
+        .string()
+        .nullable()
+        .matches(/^[a-zA-Z. \-]+$/, "Student name can not contain numbers or special characters, except an apostrophe or hyphen"),
+        teacherName: yup
+        .string()
+        .nullable()
+        .matches(/^[a-zA-Z. \-]+$/, "Teacher name can not contain numbers or special characters, except an apostrophe or hyphen"),
       });
 
     const formik = useFormik({
         initialValues: {
           name: "",
           credits: "",
+          studentName: "",
+          teacherName: "",
         },
         validationSchema: formSchema,
         onSubmit: (values, { resetForm }) => {
@@ -62,7 +72,7 @@ function CoursePage() {
                 res.json().then(
                     data => {console.log(data)
                 resetForm()
-                history.push('/courses') //fix - page doesn't refresh
+                history.push('/')
             })
             }
             else {
@@ -71,13 +81,18 @@ function CoursePage() {
         });
     }
     });
+    function handleClick(e) {
+        history.push(`/courses/delete/${id}`)
+    }
 
     return (
         <div>
         {courseToDisplay ? (
             <>
                 <h1>{courseToDisplay.name}</h1>
+                <h3>{courseToDisplay.credits} credits</h3>
                 <form onSubmit={formik.handleSubmit}>
+                    <h2>To edit the course information, enter the corrected info into the appropriate box below:</h2>
                     <label htmlFor="name">Course Name: </label>
                     <div>
                         <input 
@@ -101,11 +116,39 @@ function CoursePage() {
                             <p style={{ color: "red" }}>{formik.errors.credits}</p>
                             ) : null}
                     </div>
+                    <h2>To add an existing student to this course:</h2>
+                    <label htmlFor="student-name">Existing Student First and Last Name: </label>
+                    <div>
+                        <input 
+                            type="text" 
+                            id="student-name" 
+                            name="studentName"
+                            value={formik.values.studentName} 
+                            onChange={formik.handleChange}/>
+                            {formik.touched.studentName && formik.errors.studentName ? (
+                            <p style={{ color: "red" }}>{formik.errors.studentName}</p>
+                            ) : null}
+                    </div>
+                    <h2>To add an existing teacher as the teacher of record for this course:</h2>
+                    <label htmlFor="teacher-name">Existing Teacher First and Last Name: </label>
+                    <div>
+                        <input 
+                            type="text" 
+                            id="teacher-name" 
+                            name="teacherName"
+                            value={formik.values.teacherName} 
+                            onChange={formik.handleChange}/>
+                            {formik.touched.teacherName && formik.errors.teacherName ? (
+                            <p style={{ color: "red" }}>{formik.errors.teacherName}</p>
+                            ) : null}
+                    </div>
                     <div>
                         <p></p>
                         <button type="submit">Submit</button>
                     </div>
                 </form>
+                <label>To delete the entire course record, click here</label>
+                <button onClick={handleClick}>DELETE</button>
             </>
         ) : (
             <h1>Loading...</h1>

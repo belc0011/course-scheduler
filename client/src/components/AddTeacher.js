@@ -3,8 +3,8 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { useHistory } from 'react-router-dom';
 
-function AddStudent() {
-    const [newStudent, setNewStudent] = useState({})
+function AddTeacher() {
+    const [newTeacher, setNewTeacher] = useState({})
     const history = useHistory()
 
     const formSchema = yup.object().shape({
@@ -16,22 +16,16 @@ function AddStudent() {
         .string()
         .matches(/^[a-zA-Z\-]+$/, "Last name can not contain numbers or special characters, except a hyphen")
         .required("Last name is required"),
-        grade: yup
-        .number()
-        .min(9, "Course must be at least grade 9")
-        .max(12, "Course may not be larger than grade 12")
-        .required("Grade level is required"),
       });
 
     const formik = useFormik({
         initialValues: {
           firstName: "",
           lastName: "",
-          grade: "default",
         },
         validationSchema: formSchema,
         onSubmit: (values, { resetForm }) => {
-          fetch("http://127.0.0.1:5555/students", {
+          fetch("http://127.0.0.1:5555/teachers", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -41,9 +35,9 @@ function AddStudent() {
         .then(res => {
             if (res.ok) {
                 res.json().then(
-                    data => {setNewStudent(data)
+                    data => {setNewTeacher(data)
                     resetForm()
-                    history.push('/') //not refreshing page
+                    history.push('/')
             })
             }
             else {
@@ -55,7 +49,7 @@ function AddStudent() {
     return (
         <div>
             <form onSubmit={formik.handleSubmit}>
-                <label htmlFor="first-name">New student's first name: </label>
+                <label htmlFor="first-name">New teacher's first name: </label>
                 <div>
                     <input type="text" 
                     id="first-name" 
@@ -67,7 +61,7 @@ function AddStudent() {
                     <p style={{ color: "red" }}>{formik.errors.firstName}</p>
                     ) : null}
                 </div>
-                <label htmlFor="last-name">New student's last name: </label>
+                <label htmlFor="last-name">New teacher's last name: </label>
                 <div>
                     <input type="text" 
                     id="last-name" 
@@ -79,20 +73,6 @@ function AddStudent() {
                     <p style={{ color: "red" }}>{formik.errors.lastName}</p>
                     ) : null}
                 </div>
-                <label htmlFor="grade">Grade level: </label>
-                    <div>
-                        <select type="dropdown" 
-                        name="grade"
-                        id="grade" 
-                        value={formik.values.grade} 
-                        onChange={formik.handleChange}>
-                            <option value="default">Select One</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
-                            <option value="11">11</option>
-                            <option value="12">12</option>
-                        </select>
-                    </div>
                 <div>
                     <p></p>
                     <button type="submit">Submit</button>
@@ -101,4 +81,4 @@ function AddStudent() {
         </div>
     )
 }
-export default AddStudent
+export default AddTeacher

@@ -13,21 +13,6 @@ from models import Teacher, Student, Course
 
 # Views go here!
 
-class Home(Resource):
-
-    def get(self):
-
-        response_dict = {
-            "message": "Welcome to the Newsletter RESTful API",
-        }
-
-        response = make_response(
-            response_dict,
-            200
-        )
-
-        return response
-
 class Teachers(Resource):
     def get(self):
         teachers = Teacher.query.order_by(Teacher.last_name).all()
@@ -42,8 +27,8 @@ class Teachers(Resource):
     def post(self):
         request_dict = request.get_json()
         new_teacher = Teacher(
-            first_name = request_dict.get('first_name'),
-            last_name = request_dict.get('last_name')
+            first_name = request_dict.get('firstName').title(),
+            last_name = request_dict.get('lastName').title()
         )
         if new_teacher:
             db.session.add(new_teacher)
@@ -145,20 +130,44 @@ class CourseById(Resource):
                 course_to_edit.name = request_dict['name'].title()
             if request_dict['credits']:
                 course_to_edit.credits = request_dict['credits']
-
+            if request_dict['studentName']:
+                full_name = request_dict['studentName']
+                names = full_name.split()
+                first_name = names[0].title()
+                last_name = names[1].title()
+                student = Student.query.filter_by(first_name=first_name, last_name=last_name).first()
+                if student:
+                    course_to_edit.student_id = student.id
+                else:
+                    return {'error': 'Must submit first and last name separated by a space'}, 400
+            if request_dict['teacherName']:
+                full_name = request_dict['teacherName']
+                names = full_name.split()
+                first_name = names[0].title()
+                last_name = names[1].title()
+                teacher = Teacher.query.filter_by(first_name=first_name, last_name=last_name).first()
+                if teacher:
+                    course_to_edit.teacher_id = teacher.id
+                else:
+                    return {'error': 'Must submit first and last name separated by a space'}, 400
             db.session.add(course_to_edit)
             db.session.commit()
             updated_record = course_to_edit.to_dict()
             response = make_response(updated_record, 200)
             return response
         else:
-            return {'error': 'requested course not found'}, 400
+            return {'error': 'requested course not found'}, 404
 
     def delete(self, id):
-        pass
+        course_to_delete = Course.query.filter_by(id=id).first()
+        if course_to_delete:
+            db.session.delete(course_to_delete)
+            db.session.commit()
+            return {'message': 'record successfully deleted'}, 204
+        else:
+            return {'error': 'unable to locate course record'}, 404
 
 
-api.add_resource(Home, '/', endpoint='')
 api.add_resource(Teachers, '/teachers', endpoint='teachers')
 api.add_resource(TeacherById, '/teachers/<int:id>', endpoint='teachers/<int:id>')
 api.add_resource(Students, '/students', endpoint='students')
