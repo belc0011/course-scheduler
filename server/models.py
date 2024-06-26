@@ -1,6 +1,7 @@
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy import Time
+from sqlalchemy.orm import validates
 
 from config import db
 
@@ -25,6 +26,12 @@ class Student(db.Model, SerializerMixin):
 
     courses = db.relationship('Course', back_populates='student')
     serialize_rules=('-courses.student',)
+
+    @validates('grade')
+    def validate_grade(self, key, grade):
+        if int(grade) < 9 or int(grade) > 12:
+            raise ValueError("Invalid grade entered for high school")
+        return grade
 
 class Course(db.Model, SerializerMixin):
     __tablename__ = "courses"
