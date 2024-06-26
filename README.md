@@ -27,7 +27,7 @@ API endpoint: /courses
 HTTP Methods: GET, POST
 Response: GET sends back the courses in JSON format, POST sends back the newly created record in JSON format.
 
-- CourseById: This resource has a "get", "patch", and "delete" method which allow the user to edit course records, get a specific course record, or delete an existing course record. 
+- CourseById: This resource has a "get", "patch", and "delete" method which allow the user to edit course records, get a specific course record, or delete an existing course record. "PATCH" requests can be one or all parameters. 
 API endpoint: /courses/:id
 HTTP Methods: GET, PATCH, DELETE
 Response: GET sends back the requested course in JSON format, PATCH sends back the udpated record in JSON format, and DELETE sends back a confirmation message with a 204 code.

@@ -126,11 +126,11 @@ class CourseById(Resource):
         course_to_edit = Course.query.filter_by(id=id).first()
         print(course_to_edit)
         if course_to_edit:
-            if request_dict['name']:
+            if request_dict.get('name'):
                 course_to_edit.name = request_dict['name'].title()
-            if request_dict['credits']:
+            if request_dict.get('credits'):
                 course_to_edit.credits = request_dict['credits']
-            if request_dict['studentName']:
+            if request_dict.get('studentName'):
                 full_name = request_dict['studentName']
                 names = full_name.split()
                 first_name = names[0].title()
@@ -140,7 +140,9 @@ class CourseById(Resource):
                     course_to_edit.student_id = student.id
                 else:
                     return {'error': 'Must submit first and last name separated by a space'}, 400
-            if request_dict['teacherName']:
+            if request_dict.get('studentId'):
+                course_to_edit.student_id = request_dict['studentId']
+            if request_dict.get('teacherName'):
                 full_name = request_dict['teacherName']
                 names = full_name.split()
                 first_name = names[0].title()
@@ -150,6 +152,8 @@ class CourseById(Resource):
                     course_to_edit.teacher_id = teacher.id
                 else:
                     return {'error': 'Must submit first and last name separated by a space'}, 400
+            if request_dict.get('teacherId'):
+                course_to_edit.teacher_id = request_dict['teacherId']
             db.session.add(course_to_edit)
             db.session.commit()
             updated_record = course_to_edit.to_dict()
