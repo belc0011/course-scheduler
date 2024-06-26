@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import StudentCard from './StudentCard'
+import AddStudent from "./AddStudent";
 
 function Students() {
     const [students, setStudents] = useState([])
+    const [showAddStudent, setShowAddStudent] = useState(false)
 
     useEffect(() => {
         fetch("http://127.0.0.1:5555/students", {
@@ -22,8 +24,19 @@ function Students() {
             console.error("Error parsing JSON:", error);
         })
     }, [])
+
+    function handleClick(e) {
+        setShowAddStudent(prevState => !prevState)
+    }
     return (
         <div>
+            <label>Click here to add a new student:</label>
+                <button onClick={handleClick}>New Student</button>
+                { showAddStudent ? (
+                <>
+                    <AddStudent />
+                </>
+            ) : null }
             <h1>Students:</h1>
             <h3>Click on a student's name to pull up more information</h3>
             {students ? students.map((student) => {

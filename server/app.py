@@ -62,9 +62,6 @@ class TeacherById(Resource):
         else:
             return {'error': 'requested teacher not found'}, 404
 
-    def post(self, id):
-        pass
-
 class Students(Resource):
     def get(self):
         students = Student.query.order_by(Student.last_name).all()
@@ -78,7 +75,20 @@ class Students(Resource):
             return {'error': 'no student data found'}, 404
 
     def post(self):
-        pass
+        request_dict = request.get_json()
+        print(request_dict)
+        new_student = Student(
+            first_name=request_dict.get('firstName').title(),
+            last_name=request_dict.get('lastName').title(),
+            grade=request_dict.get('grade')
+        )
+        if new_student:
+            db.session.add(new_student)
+            db.session.commit()
+            response = make_response(new_student.to_dict(), 201)
+            return response
+        else:
+            return {'error': 'missing required parameters'}, 400
 
 class StudentById(Resource):
     def get(self, id):
@@ -88,9 +98,6 @@ class StudentById(Resource):
             return response
         else:
             return {'error': 'unable to locate student'}, 404
-
-    def post(self, id):
-        pass
 
 class Courses(Resource):
     def get(self):
@@ -128,9 +135,6 @@ class CourseById(Resource):
             return response
         else:
             return {'error': 'course not found'}, 404
-
-    def post(self, id):
-        pass
 
     def patch(self, id):
         request_dict = request.get_json()
