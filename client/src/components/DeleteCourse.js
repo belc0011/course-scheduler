@@ -2,7 +2,7 @@ import React from "react";
 import { useFormik } from "formik";
 import { useHistory, useLocation } from 'react-router-dom';
 
-function DeleteCourse() {
+function DeleteCourse({courses, setCourses}) {
     const location = useLocation()
     const url = location.pathname
     const parts = url.split("/")
@@ -21,14 +21,27 @@ function DeleteCourse() {
             },
             body: JSON.stringify(values, null, 2)
         })
-        .then(res => res.json())
+        .then(res => {
+            if (res.status === 204) {
+                return { message: 'record successfully deleted' };
+              } else {
+                return res.json();
+              }
+        })
         .then(data => {console.log(data)
-        history.push('/')})
+            const newCourseList = courses.filter((course ) => {
+                return course.id !== parseInt(id)
+            })
+        setCourses([...newCourseList])
+        alert('Course successfully deleted')
+        history.push('/courses')
+        })
         .catch(error => {
-            console.error('Error updating student:', error)
-        history.push('/')})
-        }
-    })
+            console.error('Error updating course:', error)
+            
+        })
+    }
+})
     return (
         <div>
             <form onSubmit={formik.handleSubmit}>

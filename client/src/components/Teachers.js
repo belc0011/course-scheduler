@@ -2,26 +2,8 @@ import React, { useEffect, useState } from "react";
 import TeacherCard from './TeacherCard'
 import AddTeacher from "./AddTeacher";
 
-function Teachers() {
-    const [teachers, setTeachers] = useState([])
+function Teachers({teachers, setTeachers}) {
     const [addTeacher, showAddTeacher] = useState(false)
-
-    useEffect(() => {
-        fetch(`http://127.0.0.1:5555/teachers`, {
-        method: "GET",
-        })
-        .then(res => {
-            if (res.ok) {
-                res.json().then(data => setTeachers(data))
-            }
-            else {
-                console.log("error: " + res)
-            }
-        })
-        .catch(error => {
-            console.error("Error parsing JSON:", error);
-        })
-    }, [])
 
     function handleClick(e) {
         showAddTeacher(prevState => !prevState)
@@ -32,7 +14,7 @@ function Teachers() {
                 <button onClick={handleClick}>New Teacher</button>
                 { addTeacher ? (
                 <>
-                    <AddTeacher />
+                    <AddTeacher teachers={teachers} setTeachers={setTeachers}/>
                 </>
             ) : null }
         <h1>Teachers:</h1>

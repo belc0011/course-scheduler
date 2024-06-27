@@ -3,8 +3,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { useHistory } from 'react-router-dom';
 
-function AddStudent() {
-    const [newStudent, setNewStudent] = useState({})
+function AddStudent({students, setStudents}) {
     const history = useHistory()
 
     const formSchema = yup.object().shape({
@@ -41,9 +40,8 @@ function AddStudent() {
         .then(res => {
             if (res.ok) {
                 res.json().then(
-                    data => {setNewStudent(data)
+                    data => {setStudents([...students, data])
                     resetForm()
-                    history.push('/') //not refreshing page
             })
             }
             else {

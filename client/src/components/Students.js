@@ -2,28 +2,8 @@ import React, { useEffect, useState } from "react";
 import StudentCard from './StudentCard'
 import AddStudent from "./AddStudent";
 
-function Students() {
-    const [students, setStudents] = useState([])
+function Students({ students, setStudents}) {
     const [showAddStudent, setShowAddStudent] = useState(false)
-
-    useEffect(() => {
-        fetch("http://127.0.0.1:5555/students", {
-        method: "GET",
-        })
-        .then(res => {
-            if (res.ok) {
-                res.json().then(data => {
-                    setStudents(data)
-                console.log(data)})
-            }
-            else {
-                console.log("error: " + res)
-            }
-        })
-        .catch(error => {
-            console.error("Error parsing JSON:", error);
-        })
-    }, [])
 
     function handleClick(e) {
         setShowAddStudent(prevState => !prevState)
@@ -34,7 +14,7 @@ function Students() {
                 <button onClick={handleClick}>New Student</button>
                 { showAddStudent ? (
                 <>
-                    <AddStudent />
+                    <AddStudent students={students} setStudents={setStudents}/>
                 </>
             ) : null }
             <h1>Students:</h1>

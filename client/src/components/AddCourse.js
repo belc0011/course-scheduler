@@ -3,8 +3,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { useHistory } from 'react-router-dom';
 
-function AddCourse() {
-    const [newCourse, setNewCourse] = useState({})
+function AddCourse({courses, setCourses}) {
     const history = useHistory()
 
     const formSchema = yup.object().shape({
@@ -36,15 +35,17 @@ function AddCourse() {
         .then(res => {
             if (res.ok) {
                 res.json().then(
-                    data => {setNewCourse(data)
+                    data => {setCourses([...courses, data]);
                 resetForm()
-                history.push('/')
             })
             }
             else {
                 console.log("error: " + res)
             }
-        });
+        })
+        .catch(error => {
+            console.error("Error parsing JSON:", error);
+        })
     }
     });
     return (

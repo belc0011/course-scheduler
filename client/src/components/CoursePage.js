@@ -3,7 +3,7 @@ import { useHistory, useLocation } from 'react-router-dom'
 import * as yup from "yup";
 import { useFormik } from "formik";
 
-function CoursePage() {
+function CoursePage({courses, setCourses}) {
     const location = useLocation()
     const url = location.pathname
     const parts = url.split("/")
@@ -71,8 +71,9 @@ function CoursePage() {
             if (res.ok) {
                 res.json().then(
                     data => {console.log(data)
+                        setCourses(courses.map(course => course.id === parseInt(id) ? data : course))
                 resetForm()
-                history.push('/')
+                history.push('/courses')
             })
             }
             else {
